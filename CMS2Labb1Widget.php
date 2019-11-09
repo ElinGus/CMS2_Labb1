@@ -18,28 +18,28 @@ class youtube_widget extends WP_Widget {
 	parent::__construct( 'youtube_widget', 'Youtube Widget', $widget_ops );
   }
 
-  // output the widget content on the front-end
+  // Widgetens innehåll på sidan
   public function widget( $args, $instance ) {
-    echo $args['before_widget'];
+    $videoid = apply_filters( 'widget_title', $instance[ 'title' ] );
+    
+    echo $args['before_widget'] . $args['before_title'] . $videoid . $args['after_title']; 
+    ?>
+    
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/<?php echo $videoid ?>?controls=1&autoplay=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> 
   
-		if ( ! empty( $instance['title'] ) ) {
-			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
-
-      '<iframe width="560" height="315" src="https://www.youtube.com/embed/eMw8Vkahcoc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
-		}
+    <?php echo $args['after_widget']; ?><?php
+ 
   }
 
-  // output the option form field in admin Widgets screen
+  // widgetns fält i WP-admin
   public function form( $instance ) {
-    $title = ! empty( $instance['title'] ) ? $instance['title'] : ''; ?>
+    $videoid = !empty( $instance['title'] ) ? $instance['title'] : ''; ?>
   <p>
-    <label for="<?php echo $this->get_field_id( 'title' ); ?>">ID:</label>
-    <input type="text" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" value="<?php echo esc_attr( $title ); ?>" />
+    <label for="<?php echo $this->get_field_id( 'title' ); ?>">Video-ID:</label>
+    
+    <input type="text" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" value="<?php echo esc_attr( $videoid ); ?>" />
   </p><?php
   }
-
-  // save options
-  public function update( $new_instance, $old_instance ) {}
   
 } 
 
@@ -47,6 +47,5 @@ class youtube_widget extends WP_Widget {
 add_action( 'widgets_init', function(){
 	register_widget( 'youtube_widget' );
 });
-
 
 ?>
